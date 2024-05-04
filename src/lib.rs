@@ -1,5 +1,7 @@
 use pyo3::prelude::*;
 
+mod stack_graphs;
+
 /// Formats the sum of two numbers as string.
 #[pyfunction]
 fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
@@ -8,7 +10,7 @@ fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
 
 /// A Python module implemented in Rust.
 #[pymodule]
-fn stack_graphs_python_bindings(_py: Python, m: &PyModule) -> PyResult<()> {
+fn stack_graphs_python(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;
     Ok(())
 }
