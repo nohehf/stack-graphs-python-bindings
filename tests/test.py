@@ -1,3 +1,9 @@
-from stack_graphs_python import sum_as_string
+import os
+from stack_graphs_python import index
 
-print(sum_as_string(1, 2))  # '3'
+# index ./js_sample directory
+
+# convert ./js_sample directory to absolute path
+dir = os.path.abspath("./js_sample")
+
+index([dir], "./js_sample.db")

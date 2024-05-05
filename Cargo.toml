@@ -10,3 +10,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 pyo3 = "0.20.0"
+stack-graphs = { version = "0.13.0", features = ["storage"] }
+tree-sitter-stack-graphs = { version = "0.8.1", features = ["cli"] }
+tree-sitter-stack-graphs-javascript = "0.1.0"
+tree-sitter-stack-graphs-python = "0.1.0"
