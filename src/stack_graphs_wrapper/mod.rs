@@ -50,15 +50,12 @@ pub fn index(paths: Vec<PathBuf>, db_path: &str) -> Result<(), IndexError> {
     // For now, force reindexing
     indexer.force = true;
 
-    // TODO(@nohehf): Pass this as input
-    let source_paths: Vec<PathBuf> = vec!["/Users/nohehf/tmp/js".into()];
-
-    let source_paths = canonicalize_paths(source_paths);
+    let paths = canonicalize_paths(paths);
 
     // https://github.com/github/stack-graphs/blob/7db914c01b35ce024f6767e02dd1ad97022a6bc1/tree-sitter-stack-graphs/src/cli/index.rs#L107
     let continue_from_none: Option<PathBuf> = None;
 
-    match indexer.index_all(source_paths, continue_from_none, &NoCancellation) {
+    match indexer.index_all(paths, continue_from_none, &NoCancellation) {
         Ok(_) => Ok(()),
         Err(e) => Err(IndexError {
             message: format!("Failed to index: {}", e),

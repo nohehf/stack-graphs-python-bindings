@@ -10,6 +10,9 @@ fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
 /// Indexes the given paths into stack graphs, and stores the results in the given database.
 #[pyfunction]
 fn index(paths: Vec<String>, db_path: String) -> PyResult<()> {
+    println!("Indexing paths: {:?}", paths);
+    println!("Database path: {:?}", db_path);
+
     let paths: Vec<std::path::PathBuf> =
         paths.iter().map(|p| std::path::PathBuf::from(p)).collect();
 
