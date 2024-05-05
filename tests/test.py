@@ -1,5 +1,5 @@
 import os
-from stack_graphs_python import index
+from stack_graphs_python import index, query_definition, Position
 
 # index ./js_sample directory
 
@@ -11,3 +11,7 @@ print("Indexing directory: ", dir)
 print("Database path: ", db)
 
 index([dir], db)
+
+source_reference: Position = Position(path=dir + "/index.js", line=1, column=1)
+
+print("Querying definition for: ", source_reference.path)

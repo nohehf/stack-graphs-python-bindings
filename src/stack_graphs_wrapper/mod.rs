@@ -9,17 +9,17 @@ use tree_sitter_stack_graphs::{loader::Loader, NoCancellation};
 
 // TODO(@nohehf): Better error handling
 #[derive(Debug, Clone)]
-pub struct IndexError {
+pub struct StackGraphsError {
     message: String,
 }
 
-impl std::convert::From<IndexError> for PyErr {
-    fn from(err: IndexError) -> PyErr {
+impl std::convert::From<StackGraphsError> for PyErr {
+    fn from(err: StackGraphsError) -> PyErr {
         PyException::new_err(err.message)
     }
 }
 
-pub fn index(paths: Vec<PathBuf>, db_path: &str) -> Result<(), IndexError> {
+pub fn index(paths: Vec<PathBuf>, db_path: &str) -> Result<(), StackGraphsError> {
     let py_config = tree_sitter_stack_graphs_python::language_configuration(&NoCancellation);
     let js_config = tree_sitter_stack_graphs_javascript::language_configuration(&NoCancellation);
 
@@ -28,7 +28,7 @@ pub fn index(paths: Vec<PathBuf>, db_path: &str) -> Result<(), IndexError> {
     let mut loader = match Loader::from_language_configurations(configs, None) {
         Ok(ldr) => ldr,
         Err(e) => {
-            return Err(IndexError {
+            return Err(StackGraphsError {
                 message: format!("Failed to create loader: {}", e),
             });
         }
@@ -37,7 +37,7 @@ pub fn index(paths: Vec<PathBuf>, db_path: &str) -> Result<(), IndexError> {
     let mut db_write = match SQLiteWriter::open(&db_path) {
         Ok(db) => db,
         Err(e) => {
-            return Err(IndexError {
+            return Err(StackGraphsError {
                 message: format!("Failed to open database: {}", e),
             });
         }
@@ -57,7 +57,7 @@ pub fn index(paths: Vec<PathBuf>, db_path: &str) -> Result<(), IndexError> {
 
     match indexer.index_all(paths, continue_from_none, &NoCancellation) {
         Ok(_) => Ok(()),
-        Err(e) => Err(IndexError {
+        Err(e) => Err(StackGraphsError {
             message: format!("Failed to index: {}", e),
         }),
     }
@@ -66,7 +66,7 @@ pub fn index(paths: Vec<PathBuf>, db_path: &str) -> Result<(), IndexError> {
 pub fn query_definition(
     reference: SourcePosition,
     db_path: &str,
-) -> Result<Vec<QueryResult>, IndexError> {
+) -> Result<Vec<QueryResult>, StackGraphsError> {
     let mut db_read = SQLiteReader::open(&db_path).expect("failed to open database");
 
     let reporter = ConsoleReporter::none();
@@ -77,7 +77,7 @@ pub fn query_definition(
 
     match querier.definitions(reference, &NoCancellation) {
         Ok(results) => Ok(results),
-        Err(e) => Err(IndexError {
+        Err(e) => Err(StackGraphsError {
             message: format!("Failed to query definitions: {}", e),
         }),
     }
