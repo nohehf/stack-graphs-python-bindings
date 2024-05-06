@@ -1,5 +1,5 @@
 import os
-from stack_graphs_python import index, query_definition, Position
+from stack_graphs_python import index, query_definition, Position, Language
 
 # index ./js_sample directory
 
@@ -10,7 +10,7 @@ db = os.path.abspath("./js_sample.db")
 print("Indexing directory: ", dir)
 print("Database path: ", db)
 
-index([dir], db)
+index([dir], db, language=Language.Python)
 
 source_reference: Position = Position(path=dir + "/index.js", line=2, column=12)
 
@@ -25,3 +25,8 @@ for result in results:
     print("Line: ", result.line)
     print("Column: ", result.column)
     print("\n")
+
+assert len(results) == 2
+assert results[0].path.endswith("index.js")
+assert results[0].line == 0
+assert results[0].column == 9

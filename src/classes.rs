@@ -1,6 +1,7 @@
 use std::fmt::Display;
 
 use pyo3::prelude::*;
+
 use tree_sitter_stack_graphs::cli::util::{SourcePosition, SourceSpan};
 
 #[pyclass]
