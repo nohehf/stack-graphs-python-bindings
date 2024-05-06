@@ -1,3 +1,4 @@
+use crate::classes::Language;
 use pyo3::exceptions::PyException;
 use pyo3::PyErr;
 use stack_graphs::storage::{SQLiteReader, SQLiteWriter};
@@ -5,6 +6,7 @@ use std::path::PathBuf;
 use tree_sitter_stack_graphs::cli::query::{Querier, QueryResult};
 use tree_sitter_stack_graphs::cli::util::SourcePosition;
 use tree_sitter_stack_graphs::cli::{index::Indexer, util::reporter::ConsoleReporter};
+use tree_sitter_stack_graphs::loader::LanguageConfiguration;
 use tree_sitter_stack_graphs::{loader::Loader, NoCancellation};
 
 // TODO(@nohehf): Better error handling
@@ -19,13 +21,29 @@ impl std::convert::From<StackGraphsError> for PyErr {
     }
 }
 
-pub fn index(paths: Vec<PathBuf>, db_path: &str) -> Result<(), StackGraphsError> {
-    let py_config = tree_sitter_stack_graphs_python::language_configuration(&NoCancellation);
-    let js_config = tree_sitter_stack_graphs_javascript::language_configuration(&NoCancellation);
+fn get_langauge_configuration(lang: Language) -> LanguageConfiguration {
+    match lang {
+        Language::Python => {
+            tree_sitter_stack_graphs_python::language_configuration(&NoCancellation)
+        }
+        Language::JavaScript => {
+            tree_sitter_stack_graphs_javascript::language_configuration(&NoCancellation)
+        }
+        Language::TypeScript => {
+            tree_sitter_stack_graphs_typescript::language_configuration(&NoCancellation)
+        }
+        Language::Java => tree_sitter_stack_graphs_java::language_configuration(&NoCancellation),
+    }
+}
 
-    let configs = vec![js_config, py_config];
+pub fn index(
+    paths: Vec<PathBuf>,
+    db_path: &str,
+    language: Language,
+) -> Result<(), StackGraphsError> {
+    let configurations = vec![get_langauge_configuration(language)];
 
-    let mut loader = match Loader::from_language_configurations(configs, None) {
+    let mut loader = match Loader::from_language_configurations(configurations, None) {
         Ok(ldr) => ldr,
         Err(e) => {
             return Err(StackGraphsError {
@@ -81,16 +99,6 @@ pub fn query_definition(
             message: format!("Failed to query definitions: {}", e),
         }),
     }
-
-    // if results.is_empty() {
-    //     println!("No definitions found");
-    //     return Ok(());
-    // }
-
-    // for res in results {
-    //     println!("Source: {:?}", res.source);
-    //     println!("Targets: {:?}", res.targets);
-    // }
 }
 
 // https://github.com/github/stack-graphs/blob/7db914c01b35ce024f6767e02dd1ad97022a6bc1/tree-sitter-stack-graphs/src/cli/index.rs#L118

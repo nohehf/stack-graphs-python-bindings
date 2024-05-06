@@ -584,6 +584,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "glob"
+version = "0.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d2fabcfbdc87f4758337ca535fb41a6d701b65693ce38287d856d1674551ec9b"
+
+[[package]]
 name = "hashbrown"
 version = "0.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -739,6 +745,12 @@ checksum = "29c15563dc2726973df627357ce0c9ddddbea194836909d655df6a75d2cf296d"
 dependencies = [
  "wasm-bindgen",
 ]
+
+[[package]]
+name = "json_comments"
+version = "0.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9dbbfed4e59ba9750e15ba154fdfd9329cee16ff3df539c2666b70f58cc32105"
 
 [[package]]
 name = "lazy_static"
@@ -1226,8 +1238,10 @@ dependencies = [
  "pyo3",
  "stack-graphs",
  "tree-sitter-stack-graphs",
+ "tree-sitter-stack-graphs-java",
  "tree-sitter-stack-graphs-javascript",
  "tree-sitter-stack-graphs-python",
+ "tree-sitter-stack-graphs-typescript",
 ]
 
 [[package]]
@@ -1409,6 +1423,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "tree-sitter-java"
+version = "0.20.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f0bf5d3f508cbffcbfe1805834101c0d24297a8b6c2184ad9c595556c46d2420"
+dependencies = [
+ "cc",
+ "tree-sitter",
+]
+
+[[package]]
 name = "tree-sitter-javascript"
 version = "0.20.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1482,6 +1506,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "tree-sitter-stack-graphs-java"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e68fc203c52b91edecbd8e4cf1fbf83d40bee604e33faf32dbae7d1c9bb40c7b"
+dependencies = [
+ "tree-sitter-java",
+ "tree-sitter-stack-graphs",
+]
+
+[[package]]
 name = "tree-sitter-stack-graphs-javascript"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1506,6 +1540,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "tree-sitter-stack-graphs-typescript"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b9573452aaa69735feebece40a52cca6377482f3988ca48f30fadaad84af980d"
+dependencies = [
+ "glob",
+ "serde",
+ "serde_json",
+ "stack-graphs",
+ "tree-sitter-stack-graphs",
+ "tree-sitter-typescript",
+ "tsconfig",
+]
+
+[[package]]
 name = "tree-sitter-tags"
 version = "0.20.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1515,6 +1564,29 @@ dependencies = [
  "regex",
  "thiserror",
  "tree-sitter",
+]
+
+[[package]]
+name = "tree-sitter-typescript"
+version = "0.20.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "079c695c32d39ad089101c66393aeaca30e967fba3486a91f573d2f0e12d290a"
+dependencies = [
+ "cc",
+ "tree-sitter",
+]
+
+[[package]]
+name = "tsconfig"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8613a6b9775c1e28349947b29fe983d288be5286285aa04e1282207b28be2a48"
+dependencies = [
+ "json_comments",
+ "regex",
+ "serde",
+ "serde_json",
+ "thiserror",
 ]
 
 [[package]]
