@@ -1,4 +1,4 @@
-use crate::Language;
+use crate::classes::Language;
 use pyo3::exceptions::PyException;
 use pyo3::PyErr;
 use stack_graphs::storage::{SQLiteReader, SQLiteWriter};
