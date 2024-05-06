@@ -8,26 +8,35 @@ This is a proof of concept draft, to test scripting utilities using stack-graphs
 
 It uses pyo3 and maturin to generate the bindings.
 
-## Ressources
-
-https://pyo3.rs/v0.21.2/getting-started
-
-## Setup
-
-TODO
+## Installation & Usage
 
 ```bash
-pipx install maturin
+pip install stack-graphs-python-bindings # or poetry, ...
 ```
+
+```python
+from stack_graphs_python import index, query_definition, Position
+
+# ...
+```
+
+You can refer to the example in [test/test.py](https://github.com/nohehf/stack-graphs-python-bindings/blob/main/tests/test.py) for a concrete usage example.
 
 ## Development
 
-TODO
+### Ressources
+
+https://pyo3.rs/v0.21.2/getting-started
+
+### Setup
+
+```bash
+pipx install maturin # or pip, ...
+```
+
+### Testing
 
 ```bash
 maturin develop
+python tests/test.py
 ```
-
-## Install
-
-TODO
