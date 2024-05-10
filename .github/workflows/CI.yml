@@ -27,13 +27,12 @@ jobs:
         platform:
           - runner: ubuntu-latest
             target: x86_64
-            sccache: 'true'
           - runner: ubuntu-latest
             target: x86
-            sccache: 'true'
           - runner: ubuntu-latest
             target: aarch64
-            sccache: 'false'
+            # Build fails using gcc.
+            use-zig: '--zig'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -43,8 +42,8 @@ jobs:
         uses: PyO3/maturin-action@v1
         with:
           target: ${{ matrix.platform.target }}
-          args: --release --out dist --find-interpreter
-          sccache: ${{ matrix.platform.sccache }}
+          args: --release --out dist --find-interpreter ${{ matrix.platform.use-zig }}
+          sccache: 'true'
           manylinux: auto
       - name: Upload wheels
         uses: actions/upload-artifact@v4
