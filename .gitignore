@@ -72,5 +72,6 @@ docs/_build/
 .python-version
 # stack graph sqlite dbs
 *.db
+*.sqlite
 
 .mypy_cache/

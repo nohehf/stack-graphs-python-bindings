@@ -83,13 +83,11 @@ pub fn index(
 
 pub fn query_definition(
     reference: SourcePosition,
-    db_path: &str,
+    db_reader: &mut SQLiteReader,
 ) -> Result<Vec<QueryResult>, StackGraphsError> {
-    let mut db_read = SQLiteReader::open(&db_path).expect("failed to open database");
-
     let reporter = ConsoleReporter::none();
 
-    let mut querier = Querier::new(&mut db_read, &reporter);
+    let mut querier = Querier::new(db_reader, &reporter);
 
     // print_source_position(&reference);
 
