@@ -154,7 +154,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-    if: "startsWith(github.ref, 'refs/tags/')"
+    # if: "startsWith(github.ref, 'refs/tags/')"
     # TODO(@nohehf): Re add validate-tag dependency
     needs: [linux, windows, macos, sdist]
     steps:
