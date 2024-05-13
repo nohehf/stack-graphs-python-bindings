@@ -21,23 +21,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Install python
+        uses: actions/setup-python@v2
         with:
-          python-version: '3.11'  # Adjust as necessary for your project
+          python-version: "3.11.9"
 
-      - name: Activate venv
-        run: python -m venv .venv && source .venv/bin/activate
-        
-      # - name: Install Python dependencies
-      #   run: |
-      #     python -m pip install --upgrade pip
-      #     # If there are other Python dependencies to install, add them here or use pip install -r requirements.txt
-
-      - name: Set up Maturin
-        uses: PyO3/maturin-action@v1
-        with:
-          command: develop
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install maturin
 
       - name: Run tests
         run: make test
