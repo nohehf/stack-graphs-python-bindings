@@ -27,7 +27,7 @@ jobs:
           python-version: "3.11.9"
 
       - name: Setup venv
-        run: python -m venv .venv && source .venv/bin/activate
+        run: python -m venv .venv
 
       - name: Install Python dependencies
         run: |
@@ -36,6 +36,7 @@ jobs:
 
       - name: Run tests
         run: |
+          . .venv/bin/activate
           maturin develop
           which python
           which maturin
