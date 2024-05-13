@@ -35,4 +35,8 @@ jobs:
           python -m pip install maturin
 
       - name: Run tests
-        run: make test
+        run: |
+          maturin develop
+          which python
+          which maturin
+          python tests/test.py
