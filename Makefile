@@ -46,6 +46,7 @@ release: validate-tag
 		echo "No version bump detected. Current version $(VERSION_PY) matches the latest tag $(LATEST_TAG)."; \
 		exit 1; \
 	fi
+	git commit -m 'Release $(TAG)' --allow-empty
 	git tag $(TAG) -m "$(TAG)"
 	git push origin --follow-tags
 	@echo "Released new version $(TAG)"
