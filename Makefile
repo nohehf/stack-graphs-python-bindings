@@ -18,7 +18,7 @@ test: develop
 .PHONY: validate-tags release
 
 VERSION_PY := $(shell grep 'version = ' pyproject.toml | sed -e 's/version = "\(.*\)"/\1/')
-VERSION_RS := $(shell grep 'version =' cargo.toml | sed -n 's/^version = "\(.*\)"/\1/p')
+VERSION_RS := $(shell grep 'version =' Cargo.toml | sed -n 's/^version = "\(.*\)"/\1/p')
 
 # Usage: make validate-tags TAG=1.0.0
 validate-tag:
