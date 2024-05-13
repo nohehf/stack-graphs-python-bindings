@@ -26,6 +26,9 @@ jobs:
         with:
           python-version: '3.11'  # Adjust as necessary for your project
 
+      - name: Activate venv
+        run: python -m venv .venv && source .venv/bin/activate
+        
       # - name: Install Python dependencies
       #   run: |
       #     python -m pip install --upgrade pip
