@@ -143,10 +143,8 @@ jobs:
           command: upload
           args: --non-interactive --skip-existing wheels-*/*
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: success()
         with:
           files: |
             wheels-*/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
