@@ -1,7 +1,7 @@
 .PHONY: setup
 setup:
-	pyenv virtualenvs | grep stack-graphs-python-bindings || pyenv virtualenv 3.11.9 stack-graphs-python-bindings
-	pyenv activate stack-graphs-python-bindings
+	python -m venv .venv
+	. .venv/bin/activate
 	pip install maturin
 
 .PHONY: develop
