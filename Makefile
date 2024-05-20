@@ -14,6 +14,7 @@ develop:
 	maturin develop
 
 test: develop
+	. .venv/bin/activate
 	pytest
 
 .PHONY: validate-tags release
