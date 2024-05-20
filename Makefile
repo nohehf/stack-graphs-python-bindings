@@ -3,15 +3,14 @@ setup:
 	python -m venv .venv
 	. .venv/bin/activate
 	pip install maturin
+	pip install pytest
 
 .PHONY: develop
 develop:
 	maturin develop
 
-
 test: develop
-    ## TODO: Add actual tests with pytest
-	python tests/test.py
+	pytest
 
 .PHONY: validate-tags release
 

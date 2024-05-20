@@ -2,6 +2,27 @@
 import os
 from stack_graphs_python import index, Querier, Position, Language
 
+
+ok_code = """
+class A {
+    @decorator()
+    method() {
+        // ...
+    }
+}
+"""
+
+# Tree sitter will fail on this: https://github.com/tree-sitter/tree-sitter-typescript/issues/283
+ko_code = """
+class A {
+    @decorator<T>()
+    method() {
+        // ...
+    }
+}
+"""
+
+
 # index ./js_sample directory
 
 # convert ./js_sample directory to absolute path
