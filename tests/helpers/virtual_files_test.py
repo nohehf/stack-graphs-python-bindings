@@ -159,9 +159,7 @@ print(file)
         ),
     }
 
-    virtual_repo, positions = string_to_virtual_repo(test_string)
-
-    with virtual_repo() as repo_path:
+    with string_to_virtual_repo(test_string) as (repo_path, positions):
         for file_path, (expected_content, expected_positions) in expected_files.items():
             full_path = os.path.join(repo_path, file_path)
             assert os.path.exists(
@@ -173,10 +171,9 @@ print(file)
 
             for identifier, expected_position in expected_positions.items():
                 assert identifier in positions, f"{identifier} not found in positions"
+                expected_position.path = os.path.join(repo_path, expected_position.path)
                 assert (
-                    positions[identifier].path == expected_position.path
-                    and positions[identifier].line == expected_position.line
-                    and positions[identifier].column == expected_position.column
+                    positions[identifier] == expected_position
                 ), f"Position of {identifier} does not match"
 
 
@@ -197,7 +194,6 @@ def test_cleanup():
 ;---main.py---
 print("Hello, World!")
 """
-    virtual_repo, _ = string_to_virtual_repo(test_string)
-    with virtual_repo() as repo_path:
+    with string_to_virtual_repo(test_string) as (repo_path, _):
         assert os.path.exists(repo_path), "Temporary directory should exist"
     assert not os.path.exists(repo_path), "Temporary directory should be cleaned up"

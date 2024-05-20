@@ -30,6 +30,7 @@ pub struct Position {
 #[pyclass]
 pub struct Querier {
     db_reader: SQLiteReader,
+    db_path: String,
 }
 
 #[pymethods]
@@ -38,7 +39,8 @@ impl Querier {
     pub fn new(db_path: String) -> Self {
         println!("Opening database: {}", db_path);
         Querier {
-            db_reader: SQLiteReader::open(db_path).unwrap(),
+            db_reader: SQLiteReader::open(db_path.clone()).unwrap(),
+            db_path: db_path,
         }
     }
 
@@ -54,6 +56,10 @@ impl Querier {
 
         Ok(positions)
     }
+
+    fn __repr__(&self) -> String {
+        format!("Querier(db_path=\"{}\")", self.db_path)
+    }
 }
 
 // TODO(@nohehf): Indexer class
@@ -63,6 +69,17 @@ impl Position {
     #[new]
     fn new(path: String, line: usize, column: usize) -> Self {
         Position { path, line, column }
+    }
+
+    fn __eq__(&self, other: &Position) -> bool {
+        self.path == other.path && self.line == other.line && self.column == other.column
+    }
+
+    fn __repr__(&self) -> String {
+        format!(
+            "Position(path=\"{}\", line={}, column={})",
+            self.path, self.line, self.column
+        )
     }
 }
 

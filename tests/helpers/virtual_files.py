@@ -1,64 +1,8 @@
-"""
-This is a utility to create a virtual repository from a string
-It allows to quickly write tests, as creating those files and getting the correct positions is cumbersome
-
-It parses a string into a list of files and positions in the files
-Files separators are defined as ';---{filepath}---'. It should be preceded by a newline and followed by a newline
-Positions queries are defined as '^{identifier}' where identifier is a string, prefixed by any number of spaces
-Positions queries are stripped from the file content in the temporary filesystem
-
-For example this string:
-
-string = \"""
-;---main.py---
-from module import module
-     ^{pos1}
-import lib
-from lib.file import file
-
-print(module)
-print(lib.lib)
-          ^{pos2}
-print(file)
-
-;---module.py---
-module = "module.py"
-          ^{pos3}
-
-;---lib/__init__.py---
-lib = "lib/__init__.py"
-
-;---lib/file.py---
-file = "lib/file.py"
-\"""
-
-When parsed via:
-
-virtual_repo, positions = string_to_virtual_repo(string)
-with virtual_repo() as repo_path:
-    ...
-
-Will create the following temporary filesystem:
-/
-├── main.py
-├── module.py
-└── lib
-    ├── __init__.py
-    └── file.py
-
-And output the following positions:
-{
-    "pos1": Position("main.py", 0, 6),
-    "pos2": Position("main.py", 5, 11),
-    "pos3": Position("module.py", 0, 10),
-}
-"""
-
 import os
 import re
 import tempfile
 import shutil
-from typing import Callable
+from typing import Iterator
 from stack_graphs_python import Position
 import contextlib
 
@@ -102,9 +46,95 @@ def _get_positions_in_file(file_path: str, contents: str) -> dict[str, Position]
 
 
 @contextlib.contextmanager
-def _contextmanager(files: list[tuple[str, str]]):
+def string_to_virtual_repo(
+    string: str,
+) -> Iterator[tuple[str, dict[str, Position]]]:
+    """
+    # Usage
+    ```py
+    string = \"""
+    ;---main.py---
+    from module import module
+         ^{pos1}
+
+    ;---module.py---
+    module = "module.py"
+    ^{pos2}
+    \"""
+
+    with string_to_virtual_repo(string) as (repo_path, positions):
+        ...
+    ```
+
+    # Description
+
+    This is a utility to create a virtual repository from a string
+    It allows to quickly write tests, as creating those files and getting the correct positions is cumbersome
+
+    It parses a string into a list of files and positions in the files
+    Files separators are defined as ';---{filepath}---'. It should be preceded by a newline and followed by a newline
+    Positions queries are defined as '^{identifier}' where identifier is a string, prefixed by any number of spaces
+    Positions queries are stripped from the file content in the temporary filesystem
+
+    For example this string:
+    ```py
+    string = \"""
+    ;---main.py---
+    from module import module
+        ^{pos1}
+    import lib
+    from lib.file import file
+
+    print(module)
+    print(lib.lib)
+            ^{pos2}
+    print(file)
+
+    ;---module.py---
+    module = "module.py"
+            ^{pos3}
+
+    ;---lib/__init__.py---
+    lib = "lib/__init__.py"
+
+    ;---lib/file.py---
+    file = "lib/file.py"
+    \"""
+    ```
+
+    When parsed via:
+    ```py
+    with string_to_virtual_repo(string) as (repo_path, positions):
+        ...
+    ```
+
+    Will create the following temporary filesystem:
+    ```sh
+    /
+    ├── main.py
+    ├── module.py
+    └── lib
+        ├── __init__.py
+        └── file.py
+    ```
+
+    And output the following positions:
+    ```py
+    {
+        "pos1": Position("main.py", 0, 6),
+        "pos2": Position("main.py", 5, 11),
+        "pos3": Position("module.py", 0, 10),
+    }
+    ```
+    """
+    files = _split_files(string)
     temp_dir = tempfile.mkdtemp()
-    temp_dir = "./temp_dir"
+    temp_dir = os.path.abspath(tempfile.mkdtemp())
+    positions_map = {}
+    for file_path, file_content in files:
+        abs_path = os.path.join(temp_dir, file_path)
+        positions_map.update(_get_positions_in_file(abs_path, file_content))
+
     try:
         for file_path, file_content in files:
             file_content = _remove_position_markers(file_content)
@@ -112,23 +142,9 @@ def _contextmanager(files: list[tuple[str, str]]):
             os.makedirs(os.path.dirname(full_path), exist_ok=True)
             with open(full_path, "w") as f:
                 f.write(file_content)
-        yield temp_dir
+        yield temp_dir, positions_map
+    except Exception as e:
+        print(e)
     finally:
         print("Removing temp dir")
         shutil.rmtree(temp_dir)
-
-
-def string_to_virtual_repo(
-    string: str,
-) -> tuple[
-    Callable[[], contextlib._GeneratorContextManager[str]],
-    dict[str, Position],
-]:
-    files = _split_files(string)
-    positions_map = {}
-    for file_path, file_content in files:
-        positions_map.update(_get_positions_in_file(file_path, file_content))
-    return (
-        lambda: _contextmanager(files),
-        positions_map,
-    )
