@@ -25,14 +25,9 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: "3.11.9"
-          
+
       - name: Setup dev environment
         run: make setup
 
       - name: Run tests
-        run: |
-          . .venv/bin/activate
-          maturin develop
-          which python
-          which maturin
-          python tests/test.py
+        run: make test
