@@ -1,17 +1,21 @@
+# Run all commands in a single shell, so that the virtual environment is activated for all commands.
+.ONESHELL:
+
 .PHONY: setup
 setup:
 	python -m venv .venv
 	. .venv/bin/activate
 	pip install maturin
+	pip install pytest
 
 .PHONY: develop
 develop:
+	. .venv/bin/activate
 	maturin develop
 
-
 test: develop
-    ## TODO: Add actual tests with pytest
-	python tests/test.py
+	. .venv/bin/activate
+	pytest
 
 .PHONY: validate-tags release
 
