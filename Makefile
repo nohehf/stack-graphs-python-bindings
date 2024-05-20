@@ -7,9 +7,11 @@ setup:
 
 .PHONY: develop
 develop:
+	. .venv/bin/activate
 	maturin develop
 
 test: develop
+	. .venv/bin/activate
 	pytest
 
 .PHONY: validate-tags release
