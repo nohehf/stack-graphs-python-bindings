@@ -3,7 +3,7 @@ use pyo3::prelude::*;
 mod classes;
 mod stack_graphs_wrapper;
 
-use classes::{Language, Position, Querier};
+use classes::{Indexer, Language, Position, Querier};
 
 /// Formats the sum of two numbers as string.
 #[pyfunction]
@@ -20,10 +20,10 @@ fn index(paths: Vec<String>, db_path: String, language: Language) -> PyResult<()
     let paths: Vec<std::path::PathBuf> =
         paths.iter().map(|p| std::path::PathBuf::from(p)).collect();
 
-    Ok(stack_graphs_wrapper::index(
+    Ok(stack_graphs_wrapper::index_legacy(
         paths,
         &db_path,
-        language.into(),
+        &language.into(),
     )?)
 }
 
@@ -35,5 +35,6 @@ fn stack_graphs_python(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<Position>()?;
     m.add_class::<Language>()?;
     m.add_class::<Querier>()?;
+    m.add_class::<Indexer>()?;
     Ok(())
 }

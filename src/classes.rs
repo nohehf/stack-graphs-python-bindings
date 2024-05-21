@@ -2,10 +2,11 @@ use std::fmt::Display;
 
 use pyo3::prelude::*;
 
-use stack_graphs::storage::SQLiteReader;
+use stack_graphs::storage::{SQLiteReader, SQLiteWriter};
 use tree_sitter_stack_graphs::cli::util::{SourcePosition, SourceSpan};
+use tree_sitter_stack_graphs::loader::Loader;
 
-use crate::stack_graphs_wrapper::query_definition;
+use crate::stack_graphs_wrapper::{index_all, new_loader, query_definition};
 
 #[pyclass]
 #[derive(Clone)]
@@ -62,7 +63,43 @@ impl Querier {
     }
 }
 
-// TODO(@nohehf): Indexer class
+#[pyclass]
+pub struct Indexer {
+    db_writer: SQLiteWriter,
+    db_path: String,
+    loader: Loader,
+}
+
+#[pymethods]
+impl Indexer {
+    #[new]
+    pub fn new(db_path: String, languages: Vec<Language>) -> Self {
+        Indexer {
+            db_writer: SQLiteWriter::open(db_path.clone()).unwrap(),
+            db_path: db_path,
+            loader: new_loader(languages),
+        }
+    }
+
+    pub fn index_all(&mut self, paths: Vec<String>) -> PyResult<()> {
+        let paths: Vec<std::path::PathBuf> =
+            paths.iter().map(|p| std::path::PathBuf::from(p)).collect();
+
+        match index_all(paths, &mut self.loader, &mut self.db_writer) {
+            Ok(_) => Ok(()),
+            Err(e) => Err(e.into()),
+        }
+    }
+
+    // pub fn get_files_status(&self) -> PyResult<Vec<String>> {
+    //     let files = self.loader.files_status();
+    //     Ok(files)
+    // }
+
+    fn __repr__(&self) -> String {
+        format!("Indexer(db_path=\"{}\")", self.db_path)
+    }
+}
 
 #[pymethods]
 impl Position {
