@@ -21,7 +21,7 @@ impl std::convert::From<StackGraphsError> for PyErr {
     }
 }
 
-fn get_langauge_configuration(lang: Language) -> LanguageConfiguration {
+pub fn get_langauge_configuration(lang: &Language) -> LanguageConfiguration {
     match lang {
         Language::Python => {
             tree_sitter_stack_graphs_python::language_configuration(&NoCancellation)
@@ -36,10 +36,10 @@ fn get_langauge_configuration(lang: Language) -> LanguageConfiguration {
     }
 }
 
-pub fn index(
+pub fn index_legacy(
     paths: Vec<PathBuf>,
     db_path: &str,
-    language: Language,
+    language: &Language,
 ) -> Result<(), StackGraphsError> {
     let configurations = vec![get_langauge_configuration(language)];
 
@@ -64,6 +64,40 @@ pub fn index(
     let reporter = ConsoleReporter::none();
 
     let mut indexer = Indexer::new(&mut db_write, &mut loader, &reporter);
+
+    // For now, force reindexing
+    indexer.force = true;
+
+    let paths = canonicalize_paths(paths);
+
+    // https://github.com/github/stack-graphs/blob/7db914c01b35ce024f6767e02dd1ad97022a6bc1/tree-sitter-stack-graphs/src/cli/index.rs#L107
+    let continue_from_none: Option<PathBuf> = None;
+
+    match indexer.index_all(paths, continue_from_none, &NoCancellation) {
+        Ok(_) => Ok(()),
+        Err(e) => Err(StackGraphsError {
+            message: format!("Failed to index: {}", e),
+        }),
+    }
+}
+
+pub fn new_loader(languages: Vec<Language>) -> Loader {
+    let configurations = languages
+        .iter()
+        .map(|l| get_langauge_configuration(l))
+        .collect();
+
+    Loader::from_language_configurations(configurations, None).unwrap()
+}
+
+pub fn index_all(
+    paths: Vec<PathBuf>,
+    loader: &mut Loader,
+    db_writer: &mut SQLiteWriter,
+) -> Result<(), StackGraphsError> {
+    let reporter = ConsoleReporter::none();
+
+    let mut indexer = Indexer::new(db_writer, loader, &reporter);
 
     // For now, force reindexing
     indexer.force = true;

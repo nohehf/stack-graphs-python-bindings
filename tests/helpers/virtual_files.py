@@ -46,7 +46,7 @@ def _get_positions_in_file(file_path: str, contents: str) -> dict[str, Position]
 
 
 @contextlib.contextmanager
-def string_to_virtual_repo(
+def string_to_virtual_files(
     string: str,
 ) -> Iterator[tuple[str, dict[str, Position]]]:
     """
@@ -62,7 +62,7 @@ def string_to_virtual_repo(
     ^{pos2}
     \"""
 
-    with string_to_virtual_repo(string) as (repo_path, positions):
+    with string_to_virtual_files(string) as (repo_path, positions):
         ...
     ```
 
@@ -104,7 +104,7 @@ def string_to_virtual_repo(
 
     When parsed via:
     ```py
-    with string_to_virtual_repo(string) as (repo_path, positions):
+    with string_to_virtual_files(string) as (repo_path, positions):
         ...
     ```
 

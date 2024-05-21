@@ -1,6 +1,6 @@
 import os
 from virtual_files import (
-    string_to_virtual_repo,
+    string_to_virtual_files,
     _split_files,
     _remove_position_markers,
     _get_positions_in_file,
@@ -126,7 +126,7 @@ print(module)
         ), f"Position of {identifier} does not match"
 
 
-def test_string_to_virtual_repo():
+def test_string_to_virtual_files():
     expected_files = {
         "main.py": (
             """from module import module
@@ -159,7 +159,7 @@ print(file)
         ),
     }
 
-    with string_to_virtual_repo(test_string) as (repo_path, positions):
+    with string_to_virtual_files(test_string) as (repo_path, positions):
         for file_path, (expected_content, expected_positions) in expected_files.items():
             full_path = os.path.join(repo_path, file_path)
             assert os.path.exists(
@@ -186,7 +186,7 @@ print(file)
 # ;---invalid
 # """
 #     with pytest.raises(ValueError):
-#         string_to_virtual_repo(invalid_string)
+#         string_to_virtual_files(invalid_string)
 
 
 def test_cleanup():
@@ -194,6 +194,6 @@ def test_cleanup():
 ;---main.py---
 print("Hello, World!")
 """
-    with string_to_virtual_repo(test_string) as (repo_path, _):
+    with string_to_virtual_files(test_string) as (repo_path, _):
         assert os.path.exists(repo_path), "Temporary directory should exist"
     assert not os.path.exists(repo_path), "Temporary directory should be cleaned up"
