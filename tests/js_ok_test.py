@@ -1,4 +1,4 @@
-from helpers.virtual_files import string_to_virtual_repo
+from helpers.virtual_files import string_to_virtual_files
 from stack_graphs_python import index, Indexer, Querier, Language
 import os
 
@@ -20,7 +20,7 @@ export const foo = "bar"
 
 
 def test_js_ok():
-    with string_to_virtual_repo(code) as (dir, positions):
+    with string_to_virtual_files(code) as (dir, positions):
         db_path = os.path.join(dir, "db.sqlite")
         indexer = Indexer(db_path, [Language.JavaScript])
         indexer.index_all([dir])
@@ -34,7 +34,7 @@ def test_js_ok():
 
 
 def test_js_ok_legacy_index():
-    with string_to_virtual_repo(code) as (dir, positions):
+    with string_to_virtual_files(code) as (dir, positions):
         db_path = os.path.join(dir, "db.sqlite")
         index([dir], db_path, language=Language.JavaScript)
         querier = Querier(db_path)

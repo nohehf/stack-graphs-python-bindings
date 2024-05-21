@@ -1,5 +1,5 @@
-from helpers.virtual_files import string_to_virtual_repo
-from stack_graphs_python import index, Querier, Language
+from helpers.virtual_files import string_to_virtual_files
+from stack_graphs_python import index, Language
 import os
 import pytest
 
@@ -25,16 +25,17 @@ class A {
 """
 
 
-# def test_ts_ok():
-#     with string_to_virtual_repo(ok_code) as (dir, _):
-#         db_path = os.path.abspath("./db.sqlite")
-#         dir = os.path.abspath(dir)
-#         index([dir], db_path, language=Language.TypeScript)
+@pytest.mark.skip("WIP")
+def test_ts_ok():
+    with string_to_virtual_files(ok_code) as (dir, _):
+        db_path = os.path.abspath("./db.sqlite")
+        dir = os.path.abspath(dir)
+        index([dir], db_path, language=Language.TypeScript)
 
 
 @pytest.mark.skip("WIP")
 def test_ts_ko():
-    with string_to_virtual_repo(ko_code) as (dir, _):
+    with string_to_virtual_files(ko_code) as (dir, _):
         print("here")
         db_path = os.path.abspath("./db.sqlite")
         dir = os.path.abspath(dir)

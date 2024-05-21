@@ -91,6 +91,7 @@ impl Indexer {
         }
     }
 
+    // @TODO: Add a method to retrieve the status of the files (indexed, failed, etc.)
     // pub fn get_files_status(&self) -> PyResult<Vec<String>> {
     //     let files = self.loader.files_status();
     //     Ok(files)

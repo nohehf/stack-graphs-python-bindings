@@ -1,5 +1,5 @@
-from helpers.virtual_files import string_to_virtual_repo
-from stack_graphs_python import index, Querier, Language
+from helpers.virtual_files import string_to_virtual_files
+from stack_graphs_python import Indexer, Querier, Language
 import os
 import pytest
 
@@ -22,10 +22,11 @@ export const foo = "bar"
 
 @pytest.mark.skip("WIP")
 def test_ts_ok() -> None:
-    with string_to_virtual_repo(code) as (dir, positions):
-        db_path = os.path.abspath("./db.sqlite")
+    with string_to_virtual_files(code) as (dir, positions):
+        db_path = os.path.join(dir, "db.sqlite")
         dir = os.path.abspath(dir)
-        index([dir], db_path, language=Language.TypeScript)
+        indexer = Indexer(db_path, [Language.TypeScript])
+        indexer.index_all([dir])
         querier = Querier(db_path)
         source_reference = positions["query"]
         results = querier.definitions(source_reference)
