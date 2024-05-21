@@ -30,12 +30,13 @@ class Querier:
     Usage: see Querier.definitions
     """
     def __init__(self, db_path: str) -> None: ...
-    def definitions(self, reference: Position) -> list[Position]: ...
-    """
-    Get the definitions of a given reference
-    - reference: the position of the reference
-    - returns: a list of positions of the definitions
-    """
+    def definitions(self, reference: Position) -> list[Position]:
+        """
+        Get the definitions of a given reference
+        - reference: the position of the reference
+        - returns: a list of positions of the definitions
+        """
+        ...
     def __repr__(self) -> str: ...
 
 class Indexer:
@@ -45,10 +46,11 @@ class Indexer:
     - languages: the list of languages to index
     """
     def __init__(self, db_path: str, languages: list[Language]) -> None: ...
-    def index_all(self, paths: list[str]) -> None: ...
-    """
-    Index all the files in the given paths, recursively
-    """
+    def index_all(self, paths: list[str]) -> None:
+        """
+        Index all the files in the given paths, recursively
+        """
+        ...
     def __repr__(self) -> str: ...
 
 def index(paths: list[str], db_path: str, language: Language) -> None:

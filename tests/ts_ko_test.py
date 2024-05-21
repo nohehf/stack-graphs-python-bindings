@@ -1,5 +1,5 @@
 from helpers.virtual_files import string_to_virtual_files
-from stack_graphs_python import index, Language
+from stack_graphs_python import Indexer, Language
 import os
 import pytest
 
@@ -25,18 +25,19 @@ class A {
 """
 
 
-@pytest.mark.skip("WIP")
 def test_ts_ok():
     with string_to_virtual_files(ok_code) as (dir, _):
         db_path = os.path.abspath("./db.sqlite")
         dir = os.path.abspath(dir)
-        index([dir], db_path, language=Language.TypeScript)
+        indexer = Indexer(db_path, [Language.TypeScript])
+        indexer.index_all([dir])
 
 
-@pytest.mark.skip("WIP")
+@pytest.mark.skip("WIP: add a way to check for errors indexing errors")
 def test_ts_ko():
     with string_to_virtual_files(ko_code) as (dir, _):
         print("here")
         db_path = os.path.abspath("./db.sqlite")
         dir = os.path.abspath(dir)
-        index([dir], db_path, language=Language.TypeScript)
+        indexer = Indexer(db_path, [Language.TypeScript])
+        indexer.index_all([dir], db_path, language=Language.TypeScript)

@@ -83,6 +83,12 @@ export const foo = "bar"
 
 > **Note**: All the paths are absolute, and line and column numbers are 0-indexed (first line is 0, first column is 0).
 
+## Known stack-graphs / tree-sitter issues
+
+- Python: module resolution / imports seems to be broken: <https://github.com/github/stack-graphs/issues/430>
+- Typescript: module resolution doesn't work with file extensions (eg. `import { foo } from "./module"` is ok, but `import { foo } from "./module.ts"` is not). **An issue should be opened on the stack-graphs repo**. See: `tests/ts_ok_test.py`
+- Typescript: tree-sitter-typescript fails when passing a generic type to a decorator: <https://github.com/tree-sitter/tree-sitter-typescript/issues/283>
+
 ## Development
 
 ### Ressources
