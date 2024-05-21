@@ -128,8 +128,7 @@ def string_to_virtual_repo(
     ```
     """
     files = _split_files(string)
-    temp_dir = tempfile.mkdtemp()
-    temp_dir = os.path.abspath(tempfile.mkdtemp())
+    temp_dir = os.path.abspath(tempfile.mkdtemp(dir="."))
     positions_map = {}
     for file_path, file_content in files:
         abs_path = os.path.join(temp_dir, file_path)
@@ -143,8 +142,5 @@ def string_to_virtual_repo(
             with open(full_path, "w") as f:
                 f.write(file_content)
         yield temp_dir, positions_map
-    except Exception as e:
-        print(e)
     finally:
-        print("Removing temp dir")
         shutil.rmtree(temp_dir)
