@@ -40,11 +40,28 @@ validate-tag:
 
 # Usage: make release TAG=1.0.0
 release: validate-tag
+	# Check if the current branch is main
 	$(eval CURRENT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD))
 	@if [ "$(CURRENT_BRANCH)" != "main" ]; then \
 		echo "Release can only be performed from the main branch. Current branch is $(CURRENT_BRANCH)."; \
 		exit 1; \
 	fi
+	# Check if we are up to date with the remote
+	git fetch
+	$(eval LOCAL := $(shell git rev-parse @))
+	$(eval REMOTE := $(shell git rev-parse @{u}))
+	@if [ "$(LOCAL)" = "$(REMOTE)" ]; then \
+		echo "Local branch is up to date with the remote."; \
+	else \
+		echo "Local branch is not up to date with the remote. Please pull changes before releasing."; \
+		exit 1; \
+	fi
+
+	@if [ "$(LOCAL)" != "$(REMOTE)" ]; then \
+		echo "Local branch is not up to date with the remote. Please pull changes before releasing."; \
+		exit 1; \
+	fi
+	# Check if the latest tag is the same as the current version
 	$(eval LATEST_TAG := $(shell git describe --tags --abbrev=0))
 	@if [ "$(LATEST_TAG)" = "$(VERSION_PY)" ]; then \
 		echo "No version bump detected. Current version $(VERSION_PY) matches the latest tag $(LATEST_TAG)."; \
