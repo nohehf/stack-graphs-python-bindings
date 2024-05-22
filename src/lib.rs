@@ -5,11 +5,6 @@ mod stack_graphs_wrapper;
 
 use classes::{FileEntry, FileStatus, Indexer, Language, Position, Querier};
 
-/// Formats the sum of two numbers as string.
-#[pyfunction]
-fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
-    Ok((a + b).to_string())
-}
 /// Indexes the given paths into stack graphs, and stores the results in the given database.
 #[pyfunction]
 fn index(paths: Vec<String>, db_path: String, language: Language) -> PyResult<()> {
@@ -30,7 +25,6 @@ fn index(paths: Vec<String>, db_path: String, language: Language) -> PyResult<()
 /// A Python module implemented in Rust.
 #[pymodule]
 fn stack_graphs_python(_py: Python, m: &PyModule) -> PyResult<()> {
-    m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;
     m.add_function(wrap_pyfunction!(index, m)?)?;
     m.add_class::<Position>()?;
     m.add_class::<Language>()?;
