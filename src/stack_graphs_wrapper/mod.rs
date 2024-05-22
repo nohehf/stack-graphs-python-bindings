@@ -15,6 +15,12 @@ pub struct StackGraphsError {
     message: String,
 }
 
+impl StackGraphsError {
+    pub fn from(message: String) -> StackGraphsError {
+        StackGraphsError { message }
+    }
+}
+
 impl std::convert::From<StackGraphsError> for PyErr {
     fn from(err: StackGraphsError) -> PyErr {
         PyException::new_err(err.message)
@@ -140,4 +146,48 @@ fn canonicalize_paths(paths: Vec<PathBuf>) -> Vec<PathBuf> {
         .map(|p| p.canonicalize())
         .collect::<std::result::Result<Vec<_>, _>>()
         .unwrap()
+}
+
+pub fn get_status_all(
+    db_reader: &mut SQLiteReader,
+) -> Result<Vec<stack_graphs::storage::FileEntry>, StackGraphsError> {
+    let mut files = db_reader
+        .list_all()
+        .map_err(|e| StackGraphsError::from(e.to_string()))?;
+    let iter = files
+        .try_iter()
+        .map_err(|e| StackGraphsError::from(e.to_string()))?;
+
+    let results = iter
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|e| StackGraphsError::from(e.to_string()))?;
+
+    Ok(results)
+}
+
+pub fn get_status(
+    paths: Vec<PathBuf>,
+    db_reader: &mut SQLiteReader,
+) -> Result<Vec<stack_graphs::storage::FileEntry>, StackGraphsError> {
+    let paths = canonicalize_paths(paths);
+
+    let mut entries: Vec<stack_graphs::storage::FileEntry> = Vec::new();
+
+    for path in paths {
+        let mut files = db_reader
+            .list_file_or_directory(&path)
+            .map_err(|e| StackGraphsError::from(e.to_string()))?;
+
+        let iter = files
+            .try_iter()
+            .map_err(|e| StackGraphsError::from(e.to_string()))?;
+
+        let results = iter
+            .collect::<Result<Vec<_>, _>>()
+            .map_err(|e| StackGraphsError::from(e.to_string()))?;
+
+        entries.extend(results)
+    }
+
+    Ok(entries)
 }

@@ -6,7 +6,9 @@ use stack_graphs::storage::{SQLiteReader, SQLiteWriter};
 use tree_sitter_stack_graphs::cli::util::{SourcePosition, SourceSpan};
 use tree_sitter_stack_graphs::loader::Loader;
 
-use crate::stack_graphs_wrapper::{index_all, new_loader, query_definition};
+use crate::stack_graphs_wrapper::{
+    get_status, get_status_all, index_all, new_loader, query_definition,
+};
 
 #[pyclass]
 #[derive(Clone)]
@@ -15,6 +17,77 @@ pub enum Language {
     JavaScript,
     TypeScript,
     Java,
+}
+
+#[pyclass]
+#[derive(Clone)]
+pub enum FileStatus {
+    Missing,
+    Indexed,
+    Error,
+}
+
+#[pyclass]
+#[derive(Clone)]
+pub struct FileEntry {
+    #[pyo3(get)]
+    pub path: String,
+    #[pyo3(get)]
+    pub tag: String,
+    #[pyo3(get)]
+    pub status: FileStatus,
+    // As pyo3 does not support string enums, we use Option<String> here instead.
+    #[pyo3(get)]
+    pub error: Option<String>,
+}
+
+impl From<stack_graphs::storage::FileEntry> for FileEntry {
+    fn from(entry: stack_graphs::storage::FileEntry) -> Self {
+        let status = match entry.status {
+            stack_graphs::storage::FileStatus::Missing => FileStatus::Missing,
+            stack_graphs::storage::FileStatus::Indexed => FileStatus::Indexed,
+            stack_graphs::storage::FileStatus::Error(_) => FileStatus::Error,
+        };
+
+        let error = match entry.status {
+            stack_graphs::storage::FileStatus::Error(e) => Some(e),
+            _ => None,
+        };
+
+        FileEntry {
+            path: entry.path.to_str().unwrap().to_string(),
+            tag: entry.tag,
+            status,
+            error,
+        }
+    }
+}
+
+#[pymethods]
+impl FileEntry {
+    fn __repr__(&self) -> String {
+        match self {
+            FileEntry {
+                path,
+                tag,
+                status,
+                error,
+            } => {
+                let error = match error {
+                    Some(e) => format!("(\"{}\")", e),
+                    None => "".to_string(),
+                };
+
+                format!(
+                    "FileEntry(path=\"{}\", tag=\"{}\", status={}{})",
+                    path,
+                    tag,
+                    status.__pyo3__repr__(),
+                    error
+                )
+            }
+        }
+    }
 }
 
 #[pyclass]
@@ -66,6 +139,7 @@ impl Querier {
 #[pyclass]
 pub struct Indexer {
     db_writer: SQLiteWriter,
+    db_reader: SQLiteReader,
     db_path: String,
     loader: Loader,
 }
@@ -76,6 +150,7 @@ impl Indexer {
     pub fn new(db_path: String, languages: Vec<Language>) -> Self {
         Indexer {
             db_writer: SQLiteWriter::open(db_path.clone()).unwrap(),
+            db_reader: SQLiteReader::open(db_path.clone()).unwrap(),
             db_path: db_path,
             loader: new_loader(languages),
         }
@@ -91,8 +166,22 @@ impl Indexer {
         }
     }
 
-    // @TODO: Add a method to retrieve the status of the files (indexed, failed, etc.)
-    // This might be done on a separate class (Database / Storage), as it is tied to the storage, not a specific indexer
+    pub fn status(&mut self, paths: Vec<String>) -> PyResult<Vec<FileEntry>> {
+        let paths: Vec<std::path::PathBuf> =
+            paths.iter().map(|p| std::path::PathBuf::from(p)).collect();
+
+        get_status(paths, &mut self.db_reader)?
+            .into_iter()
+            .map(|e| Ok(e.into()))
+            .collect()
+    }
+
+    pub fn status_all(&mut self) -> PyResult<Vec<FileEntry>> {
+        get_status_all(&mut self.db_reader)?
+            .into_iter()
+            .map(|e| Ok(e.into()))
+            .collect()
+    }
 
     fn __repr__(&self) -> String {
         format!("Indexer(db_path=\"{}\")", self.db_path)

@@ -1,5 +1,5 @@
 from helpers.virtual_files import string_to_virtual_files
-from stack_graphs_python import index, Indexer, Querier, Language
+from stack_graphs_python import index, Indexer, Querier, Language, FileStatus
 import os
 
 code = """
@@ -24,6 +24,10 @@ def test_js_ok():
         db_path = os.path.join(dir, "db.sqlite")
         indexer = Indexer(db_path, [Language.JavaScript])
         indexer.index_all([dir])
+        status = indexer.status_all()
+        assert len(status) == 2
+        assert status[0].path == os.path.join(dir, "index.js")
+        assert status[0].status == FileStatus.Indexed
         querier = Querier(db_path)
         source_reference = positions["query"]
         results = querier.definitions(source_reference)
