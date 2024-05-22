@@ -6,6 +6,26 @@ class Language(Enum):
     TypeScript = 2
     Java = 3
 
+class FileStatus(Enum):
+    Indexed = 0
+    Missing = 1
+    Error = 2
+
+class FileEntry:
+    """
+    An entry in the stack graphs database for a given file:
+    """
+
+    path: str
+    tag: str
+    status: FileStatus
+    error: str | None
+    """
+    Error message if status is FileStatus.Error
+    """
+
+    def __repr__(self) -> str: ...
+
 class Position:
     """
     A position in a given file:
@@ -51,6 +71,22 @@ class Indexer:
         Index all the files in the given paths, recursively
         """
         ...
+
+    def status(self, paths: list[str]) -> list[FileEntry]:
+        """
+        Get the status of the given files
+        - paths: the paths to the files or directories
+        - returns: a list of FileEntry objects
+        """
+        ...
+
+    def status_all(self) -> list[FileEntry]:
+        """
+        Get the status of all the files in the database
+        - returns: a list of FileEntry objects
+        """
+        ...
+
     def __repr__(self) -> str: ...
 
 def index(paths: list[str], db_path: str, language: Language) -> None:
