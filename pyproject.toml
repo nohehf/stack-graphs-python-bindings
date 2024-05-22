@@ -10,6 +10,6 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
 ]
-version = "0.0.10"
+version = "0.0.11"
 [tool.maturin]
 features = ["pyo3/extension-module"]
