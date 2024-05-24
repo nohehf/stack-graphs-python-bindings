@@ -130,14 +130,14 @@ Before releasing 0.1.0, which I expect to be a first stable API, the following n
 
 - [ ] Add more testing, especially:
   - [ ] Test all supported languages (Java, ~~Python~~, ~~TypeScript~~, ~~JavaScript~~)
-  - [ ] Test failing cases, eg. files that cannot be indexed
+  - [x] Test failing cases, eg. files that cannot be indexed
 - [ ] Add options to the classes:
   - [ ] Verbosity
   - [ ] Force for the Indexer
   - [ ] Fail on error for the Indexer, or continue indexing
-- [ ] Handle the storage (database) in a dedicated class, and pass it to the Indexer and Querier
-- [ ] Add methods to query the indexing status (eg. which files have been indexed, which failed, etc.)
-- [ ] Rely on the main branch of stack-graphs, and update the bindings accordingly
+- [ ] Handle the storage (database) in a dedicated class, and pass it to the Indexer and Querier *-> this might not be necessary*
+- [x] Add methods to query the indexing status (eg. which files have been indexed, which failed, etc.)
+- [x] Rely on the main branch of stack-graphs, and update the bindings accordingly
 - [ ] Better error handling, return clear errors, test them and add them to the `.pyi` interface
 - [ ] Lint and format the rust code
 - [ ] CI/CD for the rust code
