@@ -820,8 +820,7 @@ checksum = "90ed8c1e510134f979dbc4f070f87d4313098b704861a105fe34231c70a3901c"
 [[package]]
 name = "lsp-positions"
 version = "0.3.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "aa61ce94f83d24eba829bbba054b40e9996d8531c87670799fd0c43dea97be37"
+source = "git+https://github.com/nohehf/stack-graphs.git?rev=9551ad995c79277d950ac2e0d5d9a2d5e42631e2#9551ad995c79277d950ac2e0d5d9a2d5e42631e2"
 dependencies = [
  "bincode",
  "memchr",
@@ -1211,8 +1210,7 @@ checksum = "3c5e1a9a646d36c3599cd173a41282daf47c44583ad367b8e6837255952e5c67"
 [[package]]
 name = "stack-graphs"
 version = "0.13.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "af63a628b6666b3ce870cac60623d71d1575a9ccc5b2f0a2f83143c3e7da9a3a"
+source = "git+https://github.com/nohehf/stack-graphs.git?rev=9551ad995c79277d950ac2e0d5d9a2d5e42631e2#9551ad995c79277d950ac2e0d5d9a2d5e42631e2"
 dependencies = [
  "bincode",
  "bitvec",
@@ -1473,9 +1471,8 @@ dependencies = [
 
 [[package]]
 name = "tree-sitter-stack-graphs"
-version = "0.8.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8e32c7eb7d8ce3a06f1b9b52921095fc3318af748949917ee77131ca28d7f35d"
+version = "0.8.2"
+source = "git+https://github.com/nohehf/stack-graphs.git?rev=9551ad995c79277d950ac2e0d5d9a2d5e42631e2#9551ad995c79277d950ac2e0d5d9a2d5e42631e2"
 dependencies = [
  "anyhow",
  "base64 0.21.7",
@@ -1508,8 +1505,7 @@ dependencies = [
 [[package]]
 name = "tree-sitter-stack-graphs-java"
 version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e68fc203c52b91edecbd8e4cf1fbf83d40bee604e33faf32dbae7d1c9bb40c7b"
+source = "git+https://github.com/nohehf/stack-graphs.git?rev=9551ad995c79277d950ac2e0d5d9a2d5e42631e2#9551ad995c79277d950ac2e0d5d9a2d5e42631e2"
 dependencies = [
  "tree-sitter-java",
  "tree-sitter-stack-graphs",
@@ -1518,8 +1514,7 @@ dependencies = [
 [[package]]
 name = "tree-sitter-stack-graphs-javascript"
 version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6627c588d44e3af0e85a33d8fdd055e8a1d20f8f37a0cf333c9e624ec0415ee5"
+source = "git+https://github.com/nohehf/stack-graphs.git?rev=9551ad995c79277d950ac2e0d5d9a2d5e42631e2#9551ad995c79277d950ac2e0d5d9a2d5e42631e2"
 dependencies = [
  "serde",
  "serde_json",
@@ -1532,8 +1527,7 @@ dependencies = [
 [[package]]
 name = "tree-sitter-stack-graphs-python"
 version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "be8371b7b134ca52e064f2b2e1f2e4bd9cb9e92a07c7f357fa66f5ea111ab15c"
+source = "git+https://github.com/nohehf/stack-graphs.git?rev=9551ad995c79277d950ac2e0d5d9a2d5e42631e2#9551ad995c79277d950ac2e0d5d9a2d5e42631e2"
 dependencies = [
  "tree-sitter-python",
  "tree-sitter-stack-graphs",
@@ -1541,11 +1535,12 @@ dependencies = [
 
 [[package]]
 name = "tree-sitter-stack-graphs-typescript"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b9573452aaa69735feebece40a52cca6377482f3988ca48f30fadaad84af980d"
+version = "0.3.0"
+source = "git+https://github.com/nohehf/stack-graphs.git?rev=9551ad995c79277d950ac2e0d5d9a2d5e42631e2#9551ad995c79277d950ac2e0d5d9a2d5e42631e2"
 dependencies = [
+ "anyhow",
  "glob",
+ "regex",
  "serde",
  "serde_json",
  "stack-graphs",

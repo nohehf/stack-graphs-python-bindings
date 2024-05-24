@@ -36,7 +36,7 @@ pub fn get_langauge_configuration(lang: &Language) -> LanguageConfiguration {
             tree_sitter_stack_graphs_javascript::language_configuration(&NoCancellation)
         }
         Language::TypeScript => {
-            tree_sitter_stack_graphs_typescript::language_configuration(&NoCancellation)
+            tree_sitter_stack_graphs_typescript::language_configuration_typescript(&NoCancellation)
         }
         Language::Java => tree_sitter_stack_graphs_java::language_configuration(&NoCancellation),
     }
