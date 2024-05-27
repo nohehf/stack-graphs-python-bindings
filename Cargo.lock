@@ -820,7 +820,7 @@ checksum = "90ed8c1e510134f979dbc4f070f87d4313098b704861a105fe34231c70a3901c"
 [[package]]
 name = "lsp-positions"
 version = "0.3.3"
-source = "git+https://github.com/nohehf/stack-graphs.git?rev=9551ad995c79277d950ac2e0d5d9a2d5e42631e2#9551ad995c79277d950ac2e0d5d9a2d5e42631e2"
+source = "git+https://github.com/nohehf/stack-graphs.git?rev=41c9515b4f25b70e1e39526cd4c30c41988337c1#41c9515b4f25b70e1e39526cd4c30c41988337c1"
 dependencies = [
  "bincode",
  "memchr",
@@ -1210,7 +1210,7 @@ checksum = "3c5e1a9a646d36c3599cd173a41282daf47c44583ad367b8e6837255952e5c67"
 [[package]]
 name = "stack-graphs"
 version = "0.13.0"
-source = "git+https://github.com/nohehf/stack-graphs.git?rev=9551ad995c79277d950ac2e0d5d9a2d5e42631e2#9551ad995c79277d950ac2e0d5d9a2d5e42631e2"
+source = "git+https://github.com/nohehf/stack-graphs.git?rev=41c9515b4f25b70e1e39526cd4c30c41988337c1#41c9515b4f25b70e1e39526cd4c30c41988337c1"
 dependencies = [
  "bincode",
  "bitvec",
@@ -1231,7 +1231,7 @@ dependencies = [
 
 [[package]]
 name = "stack-graphs-python-bindings"
-version = "0.0.11"
+version = "0.0.12"
 dependencies = [
  "pyo3",
  "stack-graphs",
@@ -1472,7 +1472,7 @@ dependencies = [
 [[package]]
 name = "tree-sitter-stack-graphs"
 version = "0.8.2"
-source = "git+https://github.com/nohehf/stack-graphs.git?rev=9551ad995c79277d950ac2e0d5d9a2d5e42631e2#9551ad995c79277d950ac2e0d5d9a2d5e42631e2"
+source = "git+https://github.com/nohehf/stack-graphs.git?rev=41c9515b4f25b70e1e39526cd4c30c41988337c1#41c9515b4f25b70e1e39526cd4c30c41988337c1"
 dependencies = [
  "anyhow",
  "base64 0.21.7",
@@ -1505,7 +1505,7 @@ dependencies = [
 [[package]]
 name = "tree-sitter-stack-graphs-java"
 version = "0.3.0"
-source = "git+https://github.com/nohehf/stack-graphs.git?rev=9551ad995c79277d950ac2e0d5d9a2d5e42631e2#9551ad995c79277d950ac2e0d5d9a2d5e42631e2"
+source = "git+https://github.com/nohehf/stack-graphs.git?rev=41c9515b4f25b70e1e39526cd4c30c41988337c1#41c9515b4f25b70e1e39526cd4c30c41988337c1"
 dependencies = [
  "tree-sitter-java",
  "tree-sitter-stack-graphs",
@@ -1514,7 +1514,7 @@ dependencies = [
 [[package]]
 name = "tree-sitter-stack-graphs-javascript"
 version = "0.1.0"
-source = "git+https://github.com/nohehf/stack-graphs.git?rev=9551ad995c79277d950ac2e0d5d9a2d5e42631e2#9551ad995c79277d950ac2e0d5d9a2d5e42631e2"
+source = "git+https://github.com/nohehf/stack-graphs.git?rev=41c9515b4f25b70e1e39526cd4c30c41988337c1#41c9515b4f25b70e1e39526cd4c30c41988337c1"
 dependencies = [
  "serde",
  "serde_json",
@@ -1527,7 +1527,7 @@ dependencies = [
 [[package]]
 name = "tree-sitter-stack-graphs-python"
 version = "0.1.0"
-source = "git+https://github.com/nohehf/stack-graphs.git?rev=9551ad995c79277d950ac2e0d5d9a2d5e42631e2#9551ad995c79277d950ac2e0d5d9a2d5e42631e2"
+source = "git+https://github.com/nohehf/stack-graphs.git?rev=41c9515b4f25b70e1e39526cd4c30c41988337c1#41c9515b4f25b70e1e39526cd4c30c41988337c1"
 dependencies = [
  "tree-sitter-python",
  "tree-sitter-stack-graphs",
@@ -1536,7 +1536,7 @@ dependencies = [
 [[package]]
 name = "tree-sitter-stack-graphs-typescript"
 version = "0.3.0"
-source = "git+https://github.com/nohehf/stack-graphs.git?rev=9551ad995c79277d950ac2e0d5d9a2d5e42631e2#9551ad995c79277d950ac2e0d5d9a2d5e42631e2"
+source = "git+https://github.com/nohehf/stack-graphs.git?rev=41c9515b4f25b70e1e39526cd4c30c41988337c1#41c9515b4f25b70e1e39526cd4c30c41988337c1"
 dependencies = [
  "anyhow",
  "glob",
