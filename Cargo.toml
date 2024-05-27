@@ -10,13 +10,13 @@ crate-type = ["cdylib"]
 
 [dependencies]
 pyo3 = "0.20.0"
-stack-graphs = { git = "https://github.com/nohehf/stack-graphs.git", rev = "9551ad995c79277d950ac2e0d5d9a2d5e42631e2", features = [
+stack-graphs = { git = "https://github.com/nohehf/stack-graphs.git", rev = "41c9515b4f25b70e1e39526cd4c30c41988337c1", features = [
     "storage",
 ] }
-tree-sitter-stack-graphs = { git = "https://github.com/nohehf/stack-graphs.git", rev = "9551ad995c79277d950ac2e0d5d9a2d5e42631e2", features = [
+tree-sitter-stack-graphs = { git = "https://github.com/nohehf/stack-graphs.git", rev = "41c9515b4f25b70e1e39526cd4c30c41988337c1", features = [
     "cli",
 ] }
-tree-sitter-stack-graphs-java = { git = "https://github.com/nohehf/stack-graphs.git", rev = "9551ad995c79277d950ac2e0d5d9a2d5e42631e2" }
-tree-sitter-stack-graphs-javascript = { git = "https://github.com/nohehf/stack-graphs.git", rev = "9551ad995c79277d950ac2e0d5d9a2d5e42631e2" }
-tree-sitter-stack-graphs-python = { git = "https://github.com/nohehf/stack-graphs.git", rev = "9551ad995c79277d950ac2e0d5d9a2d5e42631e2" }
-tree-sitter-stack-graphs-typescript = { git = "https://github.com/nohehf/stack-graphs.git", rev = "9551ad995c79277d950ac2e0d5d9a2d5e42631e2" }
+tree-sitter-stack-graphs-java = { git = "https://github.com/nohehf/stack-graphs.git", rev = "41c9515b4f25b70e1e39526cd4c30c41988337c1" }
+tree-sitter-stack-graphs-javascript = { git = "https://github.com/nohehf/stack-graphs.git", rev = "41c9515b4f25b70e1e39526cd4c30c41988337c1" }
+tree-sitter-stack-graphs-python = { git = "https://github.com/nohehf/stack-graphs.git", rev = "41c9515b4f25b70e1e39526cd4c30c41988337c1" }
+tree-sitter-stack-graphs-typescript = { git = "https://github.com/nohehf/stack-graphs.git", rev = "41c9515b4f25b70e1e39526cd4c30c41988337c1" }
