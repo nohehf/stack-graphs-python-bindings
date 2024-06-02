@@ -87,8 +87,6 @@ export const foo = "bar"
 
 ## Known stack-graphs / tree-sitter issues
 
-- Python: module resolution / imports seems to be broken: <https://github.com/github/stack-graphs/issues/430>
-- Typescript: module resolution doesn't work with file extensions (eg. `import { foo } from "./module"` is ok, but `import { foo } from "./module.ts"` is not). **PR opened, fixed on the fork**. See: `tests/ts_ok_test.py`
 - Typescript: tree-sitter-typescript fails when passing a generic type to a decorator: <https://github.com/tree-sitter/tree-sitter-typescript/issues/283>
 
 ## Development
