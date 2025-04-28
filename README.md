@@ -2,8 +2,6 @@
 
 Opinionated Python bindings for the [tree-sitter-stack-graphs](https://github.com/github/stack-graphs) rust library.
 
-(Note: the project curretly relies on [fork](https://github.com/nohehf/stack-graphs))
-
 It exposes a minimal, opinionated API to leverage the stack-graphs library for reference resolution in source code.
 
 The rust bindings are built using [PyO3](https://pyo3.rs) and [maturin](https://maturin.rs).
@@ -93,7 +91,7 @@ export const foo = "bar"
 
 ### Ressources
 
-https://pyo3.rs/v0.21.2/getting-started
+<https://pyo3.rs/v0.21.2/getting-started>
 
 ### Requirements
 
