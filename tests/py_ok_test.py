@@ -18,9 +18,6 @@ definition = "definition"
 """
 
 
-@pytest.mark.skip(
-    "Stack-graphs python module resolution is currently broken. See issue: https://github.com/github/stack-graphs/issues/430"
-)
 def test_py_ok():
     with string_to_virtual_files(code) as (dir, positions):
         db_path = os.path.join(dir, "db.sqlite")

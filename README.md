@@ -96,7 +96,7 @@ export const foo = "bar"
 ### Requirements
 
 - Rust
-- Python 3.11+
+- Python 3.12+
 
 ### Setup
 

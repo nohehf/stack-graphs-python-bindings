@@ -1,4 +1,5 @@
 use std::fmt::Display;
+use std::sync::{Arc, Mutex};
 
 use pyo3::prelude::*;
 
@@ -10,8 +11,8 @@ use crate::stack_graphs_wrapper::{
     get_status, get_status_all, index_all, new_loader, query_definition,
 };
 
-#[pyclass]
-#[derive(Clone)]
+#[pyclass(eq, eq_int)]
+#[derive(Clone, PartialEq)]
 pub enum Language {
     Python,
     JavaScript,
@@ -19,8 +20,8 @@ pub enum Language {
     Java,
 }
 
-#[pyclass]
-#[derive(Clone)]
+#[pyclass(eq, eq_int)]
+#[derive(Clone, PartialEq)]
 pub enum FileStatus {
     Missing,
     Indexed,
@@ -103,7 +104,7 @@ pub struct Position {
 
 #[pyclass]
 pub struct Querier {
-    db_reader: SQLiteReader,
+    db_reader: Arc<Mutex<SQLiteReader>>,
     db_path: String,
 }
 
@@ -113,13 +114,15 @@ impl Querier {
     pub fn new(db_path: String) -> Self {
         println!("Opening database: {}", db_path);
         Querier {
-            db_reader: SQLiteReader::open(db_path.clone()).unwrap(),
+            db_reader: Arc::new(Mutex::new(
+                SQLiteReader::open(db_path.clone()).unwrap().into(),
+            )),
             db_path: db_path,
         }
     }
 
     pub fn definitions(&mut self, reference: Position) -> PyResult<Vec<Position>> {
-        let result = query_definition(reference.into(), &mut self.db_reader)?;
+        let result = query_definition(reference.into(), &mut *self.db_reader.lock().unwrap())?;
 
         let positions: Vec<Position> = result
             .into_iter()
@@ -138,8 +141,8 @@ impl Querier {
 
 #[pyclass]
 pub struct Indexer {
-    db_writer: SQLiteWriter,
-    db_reader: SQLiteReader,
+    db_writer: Arc<Mutex<SQLiteWriter>>,
+    db_reader: Arc<Mutex<SQLiteReader>>,
     db_path: String,
     loader: Loader,
 }
@@ -149,8 +152,8 @@ impl Indexer {
     #[new]
     pub fn new(db_path: String, languages: Vec<Language>) -> Self {
         Indexer {
-            db_writer: SQLiteWriter::open(db_path.clone()).unwrap(),
-            db_reader: SQLiteReader::open(db_path.clone()).unwrap(),
+            db_writer: Arc::new(Mutex::new(SQLiteWriter::open(db_path.clone()).unwrap())),
+            db_reader: Arc::new(Mutex::new(SQLiteReader::open(db_path.clone()).unwrap())),
             db_path: db_path,
             loader: new_loader(languages),
         }
@@ -160,7 +163,11 @@ impl Indexer {
         let paths: Vec<std::path::PathBuf> =
             paths.iter().map(|p| std::path::PathBuf::from(p)).collect();
 
-        match index_all(paths, &mut self.loader, &mut self.db_writer) {
+        match index_all(
+            paths,
+            &mut self.loader,
+            &mut *self.db_writer.lock().unwrap(),
+        ) {
             Ok(_) => Ok(()),
             Err(e) => Err(e.into()),
         }
@@ -170,14 +177,14 @@ impl Indexer {
         let paths: Vec<std::path::PathBuf> =
             paths.iter().map(|p| std::path::PathBuf::from(p)).collect();
 
-        get_status(paths, &mut self.db_reader)?
+        get_status(paths, &mut *self.db_reader.lock().unwrap())?
             .into_iter()
             .map(|e| Ok(e.into()))
             .collect()
     }
 
     pub fn status_all(&mut self) -> PyResult<Vec<FileEntry>> {
-        get_status_all(&mut self.db_reader)?
+        get_status_all(&mut *self.db_reader.lock().unwrap())?
             .into_iter()
             .map(|e| Ok(e.into()))
             .collect()

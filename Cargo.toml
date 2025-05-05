@@ -9,7 +9,7 @@ name = "stack_graphs_python"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = "0.20.0"
+pyo3 = "0.24.2"
 stack-graphs = { version = "0.14.1", features = ["storage"] }
 tree-sitter-stack-graphs = { version = "0.10.0", features = ["cli"] }
 tree-sitter-stack-graphs-java = "0.5.0"

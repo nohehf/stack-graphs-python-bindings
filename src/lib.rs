@@ -24,7 +24,7 @@ fn index(paths: Vec<String>, db_path: String, language: Language) -> PyResult<()
 
 /// A Python module implemented in Rust.
 #[pymodule]
-fn stack_graphs_python(_py: Python, m: &PyModule) -> PyResult<()> {
+fn stack_graphs_python(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(index, m)?)?;
     m.add_class::<Position>()?;
     m.add_class::<Language>()?;
